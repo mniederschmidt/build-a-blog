@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+
+{% extends "base.html" %}
+
+{% block content %}
+	<h1>blog!</h1>
+
+	<form action="/newpost" method="get">
+    	<input type="submit" value="Add New Post"/>
+	</form>	
+
+	<br>
+
+	{% for post in posts %}
+		<div class="post">
+			<div class="post-title">{{post.title}}</div>
+			<pre class="post-body">{{post.text}}</pre>
+		</div>
+	{% endfor %}
+
+{% endblock %}
