@@ -32,7 +32,7 @@ class MainPage(Handler):
 		self.redirect("/blog")
 
 class BlogList(Handler):
-	def render_list(self, title="", text="", error=""):
+	def render_list(self):
 		posts = db.GqlQuery("SELECT * FROM Post "
 						   "ORDER BY created DESC "
 						   "LIMIT 5")
@@ -41,6 +41,16 @@ class BlogList(Handler):
 
 	def get(self):
 		self.render_list()
+
+class ViewPostHandler(Handler):
+	def render_post(self, id=""):
+		post = Post.get_by_id(id)
+
+		self.render("main.html", posts=post)
+
+	def get(self, id):
+		self.render_post(id)
+		#self.response.write(id)
 
 class AddPost(Handler):
 	def render_newpost(self, title="", text="", error=""):
@@ -66,4 +76,5 @@ app = webapp2.WSGIApplication([
     ('/', MainPage),
     ('/blog', BlogList),
     ('/newpost', AddPost),
+	webapp2.Route('/blog/<id:\d+>', ViewPostHandler)    
 ], debug=True)
